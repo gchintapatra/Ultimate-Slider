@@ -1,0 +1,144 @@
+# Ultimate Swiper Slider Plugin Documentation
+
+## 1. Plugin Overview
+Ultimate Swiper Slider is a fully responsive WordPress slider plugin that is:
+
+- Elementor compatible (optional)
+- Page-level asset loading optimized
+- Fully secure and WordPress-standard compliant
+- Admin-friendly with a complete settings panel
+- Supports theme/child-theme overrides
+- Clean uninstall functionality
+- Works even if Elementor is not installed, using shortcode `[ultimate_slider]` or Gutenberg block
+
+## 2. Plugin Folder Structure
+
+ultimate-swiper-slider/
+├── ultimate-swiper-slider.php          # Main plugin bootstrap file
+├── uninstall.php                       # Safe uninstall script
+├── includes/                           # Core PHP includes
+│   ├── defaults.php                    # Default plugin settings
+│   ├── functions.php                   # Core helper functions, enqueue, theme override detection
+│   ├── slider-render.php               # Shortcode and rendering functions
+│   └── admin-settings.php              # Admin options page
+├── assets/                             # CSS & JS assets
+│   ├── slider.css                       # Default plugin CSS
+│   └── swiper-init.js                   # JS to initialize Swiper
+├── elementor/                           # Elementor widget (optional)
+│   └── slider-widget.php                # Elementor widget PHP
+└── README.md                            # Complete plugin documentation
+
+# Optional Theme Override (inside active theme)
+wp-content/themes/your-active-theme/ultimate-swiper-slider/
+├── config.php                          # Optional: theme override for plugin settings
+└── slider.css                           # Optional: theme override for slider CSS
+
+## 3. Admin Settings
+
+| Setting                  | Type      | Description |
+|---------------------------|-----------|-------------|
+| Autoplay                  | Checkbox  | Enable/disable automatic slide |
+| Speed                     | Number    | Slide duration in milliseconds |
+| Arrows                    | Checkbox  | Show next/prev navigation buttons |
+| Dots                      | Checkbox  | Show pagination dots |
+| Loop                      | Checkbox  | Enable continuous loop of slides |
+| Keyboard Navigation       | Checkbox  | Allow arrow key control |
+| Touch Support             | Checkbox  | Enable swipe on mobile devices |
+| Effect                    | Select    | Slide effect: Slide, Fade, Cube, Coverflow, Flip |
+| Lazy Load                 | Checkbox  | Load images only when visible |
+| Delete Data on Uninstall  | Checkbox  | Remove all plugin data, slides, options, and transients |
+
+**Admin Path:** `Settings → Ultimate Slider`
+
+## 4. Usage
+
+### Shortcode
+[ultimate_slider autoplay="true" speed="4000"]
+
+**In PHP (Theme or Template):**
+```php
+<?php
+echo do_shortcode('[ultimate_slider autoplay="true" speed="4000"]');
+?>
+Elementor Widget:
+
+Drag and drop the Ultimate Slider widget (works only if Elementor is active)
+
+Configure autoplay and speed inside the widget
+
+If Elementor is not installed, the shortcode [ultimate_slider] still works
+
+Gutenberg Block:
+
+Block name: uss/slider
+
+Add anywhere in the Gutenberg editor
+
+5. Theme Overrides
+
+You can override plugin defaults by creating a folder in your active theme:
+
+wp-content/themes/your-active-theme/ultimate-swiper-slider/
+
+Config Override (config.php):
+<?php
+return [
+    'autoplay' => false,
+    'speed'    => 6000,
+    'arrows'   => false,
+];
+?>
+
+CSS Override (slider.css):
+.uss-slider { border: 2px solid #333; }
+.swiper-button-next, .swiper-button-prev { color: red; }
+
+Plugin automatically detects these files and uses them instead of the defaults.
+
+
+## 6. Security & Best Practices
+
+- Admin inputs sanitized and validated  
+- Output escaped using `esc_html()`, `esc_attr()`, `esc_url()`, `wp_json_encode()`  
+- Nonces and capability checks on admin actions  
+- Prepared SQL queries with `$wpdb->prepare()`  
+- Namespaced/prefixed functions (`uss_`) to avoid conflicts  
+
+## 7. Optimization
+
+- JS/CSS loaded **only on pages where slider exists**  
+- Lazy-init JS to avoid blocking rendering  
+- Compatible with caching/CDN plugins  
+- Optimized for Core Web Vitals (fast LCP, FCP)
+
+## 8. Uninstall Behavior
+
+- Deletes settings, slides, postmeta, and transients **only if “Delete Data on Uninstall” is checked**  
+- Otherwise, plugin data remains in the database  
+- Clean uninstall ensures no orphaned data  
+
+## 9. File References
+
+| File | Purpose |
+|------|---------|
+| `ultimate-swiper-slider.php` | Main plugin bootstrap file |
+| `includes/defaults.php` | Default settings for slider |
+| `includes/functions.php` | Core functions, theme override detection, asset enqueue |
+| `includes/slider-render.php` | Shortcode and rendering functions |
+| `includes/admin-settings.php` | Admin settings page |
+| `assets/slider.css` | Default CSS |
+| `assets/swiper-init.js` | JS to initialize slider with settings |
+| `elementor/slider-widget.php` | Elementor widget (optional) |
+| `uninstall.php` | Safe uninstall script |
+| `README.md` | Documentation |
+
+## 10. Installation & Usage Steps
+
+1. Copy `ultimate-swiper-slider/` into `wp-content/plugins/`.  
+2. Activate plugin in WordPress admin.  
+3. Configure settings under `Settings → Ultimate Slider`.  
+4. Add sliders using:
+   - **Shortcode:** `[ultimate_slider]`
+   - **Gutenberg block:** `uss/slider`
+   - **Elementor widget:** Drag & drop “Ultimate Slider”  
+5. Optional: Add `config.php` and/or `slider.css` in theme override folder to customize appearance or default settings
